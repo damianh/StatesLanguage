@@ -90,6 +90,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\StatesLanguage\StatesLanguage.csproj" />
     <ProjectReference Include="..\src\StatesLanguage.csproj" />
   </ItemGroup>
 </Project>
