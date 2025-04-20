@@ -23,14 +23,37 @@ namespace StatesLanguage.States
     /// <summary>
     ///     A single branch of parallel execution in a state machine. See <see cref="ParallelState" />.
     /// </summary>
+    /// <remarks>
+    /// See the <a href="https://states-language.net/spec.html#parallel-state">Parallel State</a> section in the specification.
+    /// </remarks>
     public class SubStateMachine
     {
         private SubStateMachine()
         {
         }
 
+        /// <summary>
+        /// REQUIRED. The name of the state where the branch's execution begins.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+        /// </remarks>
         public string StartAt { get; private set; }
+
+        /// <summary>
+        /// OPTIONAL. A human-readable description of the branch.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+        /// </remarks>
         public string Comment { get; private set; }
+
+        /// <summary>
+        /// REQUIRED. A dictionary where keys are state names (strings) and values are <see cref="State"/> objects defining each state.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+        /// </remarks>
         public Dictionary<string, State> States { get; private set; }
 
         /// <returns>Builder instance to construct a <see cref="SubStateMachine" />.</returns>
@@ -53,9 +76,12 @@ namespace StatesLanguage.States
             }
 
             /// <summary>
-            ///     An immutable <see cref="SubStateMachine" /> object.
+            /// Builds an immutable <see cref="SubStateMachine"/> object.
             /// </summary>
-            /// <returns></returns>
+            /// <returns>An immutable <see cref="SubStateMachine"/> instance.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+            /// </remarks>
             public SubStateMachine Build()
             {
                 return new SubStateMachine
@@ -67,10 +93,14 @@ namespace StatesLanguage.States
             }
 
             /// <summary>
-            ///     REQUIRED. Name of the state to start branch execution at. Must match a state name provided via States.
+            /// REQUIRED. Sets the name of the state where the branch execution begins.
+            /// This name must correspond to one of the states added via the <see cref="State{T}"/> method.
             /// </summary>
-            /// <param name="startAt">startAt Name of starting state.</param>
-            /// <returns>This object for method chaining.</returns>
+            /// <param name="startAt">The name of the starting state.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+            /// </remarks>
             public Builder StartAt(string startAt)
             {
                 _startAt = startAt;
@@ -78,10 +108,13 @@ namespace StatesLanguage.States
             }
 
             /// <summary>
-            ///     OPTIONAL. Human readable description for the state machine.
+            /// OPTIONAL. Sets a human-readable description for the branch.
             /// </summary>
-            /// <param name="comment">Comment</param>
-            /// <returns>This object for method chaining.</returns>
+            /// <param name="comment">The description text.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+            /// </remarks>
             public Builder Comment(string comment)
             {
                 _comment = comment;
@@ -89,15 +122,16 @@ namespace StatesLanguage.States
             }
 
             /// <summary>
-            ///     REQUIRED. Adds a new state to the branch. A branch MUST have at least one state.
+            /// REQUIRED. Adds a state definition to the branch.
+            /// A branch must contain at least one state.
             /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="stateName"> Name of the state</param>
-            /// <param name="stateBuilder">
-            ///     Instance of {@link Builder}. Note that the {@link State} object is not built until the {@link Branch} is
-            ///     built so any modifications on the state model will be reflected in this object.
-            /// </param>
-            /// <returns> This object for method chaining.</returns>
+            /// <typeparam name="T">The specific type of the state being added.</typeparam>
+            /// <param name="stateName">The name that uniquely identifies the state within the branch.</param>
+            /// <param name="stateBuilder">The builder for the state to be added.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#branch-fields">Branch Fields</a> section in the specification.
+            /// </remarks>
             public Builder State<T>(string stateName, State.IBuilder<T> stateBuilder) where T : State
             {
                 _stateBuilders.Add(stateName, stateBuilder);

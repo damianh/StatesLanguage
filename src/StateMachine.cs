@@ -28,33 +28,64 @@ using StatesLanguage.States;
 namespace StatesLanguage
 {
     /// <summary>
-    ///     Represents a StepFunctions state machine. A state machine must have at least one state.
-    ///     <a href="https://states-language.net/spec.html#toplevelfields">See spec</a>
+    /// Represents an Amazon States Language state machine definition.
+    /// A state machine is a collection of states that defines a workflow.
     /// </summary>
+    /// <remarks>
+    /// This class represents the top-level structure of a state machine.
+    /// See the <a href="https://states-language.net/spec.html#toplevelfields">State Machine Structure</a> section in the Amazon States Language specification.
+    /// </remarks>
     public class StateMachine
     {
         private StateMachine()
         {
         }
 
+        /// <summary>
+        /// OPTIONAL. A human-readable description of the state machine.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+        /// </remarks>
         [JsonProperty(PropertyNames.COMMENT)]
         public string Comment { get; private set; }
 
+        /// <summary>
+        /// REQUIRED. The name of the state where the state machine execution begins.
+        /// This name must exactly match one of the keys in the <see cref="States"/> dictionary.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+        /// </remarks>
         [JsonProperty(PropertyNames.START_AT)]
         public string StartAt { get; private set; }
 
+        /// <summary>
+        /// OPTIONAL. The maximum number of seconds an execution of the state machine is allowed to run.
+        /// If the execution exceeds this duration, it fails with a `States.Timeout` error.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+        /// </remarks>
         [JsonProperty(PropertyNames.TIMEOUT_SECONDS)]
         public int? TimeoutSeconds { get; private set; }
 
+        /// <summary>
+        /// REQUIRED. A dictionary where keys are state names (strings) and values are <see cref="State"/> objects defining each state.
+        /// A state machine must contain at least one state.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> and <a href="https://states-language.net/spec.html#state-types">State Types</a> sections in the specification.
+        /// </remarks>
         [JsonProperty(PropertyNames.STATES)]
         public Dictionary<string, State> States { get; private set; }
 
-        /**
-         * Deserializes a JSON representation of a state machine into a {@link StateMachine.Builder} .
-         *
-         * @param json JSON representing State machine.
-         * @return Mutable {@link StateMachine.Builder} deserialized from JSON representation.
-         */
+        /// <summary>
+        /// Deserializes a JSON string representation of a state machine into a mutable <see cref="Builder"/> instance.
+        /// </summary>
+        /// <param name="json">The JSON string defining the state machine.</param>
+        /// <returns>A <see cref="Builder"/> instance populated from the JSON.</returns>
+        /// <exception cref="StatesLanguageException">If the JSON is invalid or cannot be deserialized.</exception>
         public static Builder FromJson(string json)
         {
             try
@@ -71,6 +102,12 @@ namespace StatesLanguage
             }
         }
 
+        /// <summary>
+        /// Deserializes a <see cref="JObject"/> representation of a state machine into a mutable <see cref="Builder"/> instance.
+        /// </summary>
+        /// <param name="json">The <see cref="JObject"/> defining the state machine.</param>
+        /// <returns>A <see cref="Builder"/> instance populated from the <see cref="JObject"/>.</returns>
+        /// <exception cref="StatesLanguageException">If the <see cref="JObject"/> is invalid or cannot be deserialized.</exception>
         public static Builder FromJObject(JObject json)
         {
             try
@@ -83,9 +120,12 @@ namespace StatesLanguage
             }
         }
 
-        /**
-         * @return Compact JSON representation of this StateMachine.
-         */
+        /// <summary>
+        /// Serializes the current <see cref="StateMachine"/> instance into a JSON string.
+        /// </summary>
+        /// <param name="formatting">Specifies the formatting options for the output JSON string (e.g., indented or none).</param>
+        /// <returns>A JSON string representation of the state machine.</returns>
+        /// <exception cref="StatesLanguageException">If serialization fails.</exception>
         public string ToJson(Formatting formatting = Formatting.None)
         {
             try
@@ -105,6 +145,11 @@ namespace StatesLanguage
             }
         }
 
+        /// <summary>
+        /// Serializes the current <see cref="StateMachine"/> instance into a <see cref="JObject"/>.
+        /// </summary>
+        /// <returns>A <see cref="JObject"/> representation of the state machine.</returns>
+        /// <exception cref="StatesLanguageException">If serialization fails.</exception>
         public JObject ToJObject()
         {
             try
@@ -117,9 +162,10 @@ namespace StatesLanguage
             }
         }
 
-        /**
-         * @return Builder instance to construct a {@link StateMachine}.
-         */
+        /// <summary>
+        /// Creates a new, empty <see cref="Builder"/> instance for constructing a <see cref="StateMachine"/>.
+        /// </summary>
+        /// <returns>A new <see cref="Builder"/> instance.</returns>
         public static Builder GetBuilder()
         {
             return new Builder();
@@ -141,6 +187,10 @@ namespace StatesLanguage
             return jsonSerializer;
         }
 
+        /// <summary>
+        /// Builder pattern implementation for creating immutable <see cref="StateMachine"/> objects.
+        /// Provides methods to set the properties of a state machine before building it.
+        /// </summary>
         [JsonObject(MemberSerialization.Fields)]
         public sealed class Builder
         {
@@ -154,32 +204,44 @@ namespace StatesLanguage
             [JsonProperty(PropertyNames.TIMEOUT_SECONDS)]
             private int? _timeoutSeconds;
 
+            /// <summary>
+            /// OPTIONAL. Sets a human-readable description for the state machine.
+            /// </summary>
+            /// <param name="comment">The description text.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+            /// </remarks>
             public Builder Comment(string comment)
             {
                 _comment = comment;
                 return this;
             }
 
-            /**
-             * REQUIRED. Name of the state to start execution at. Must match a state name provided via {@link #state(String,
-             * State.Builder)}.
-             *
-             * @param startAt Name of starting state.
-             * @return This object for method chaining.
-             */
+            /// <summary>
+            /// REQUIRED. Sets the name of the state where the state machine execution should begin.
+            /// This name must correspond to one of the states added via the <see cref="State{T}"/> method.
+            /// </summary>
+            /// <param name="startAt">The name of the starting state.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+            /// </remarks>
             public Builder StartAt(string startAt)
             {
                 _startAt = startAt;
                 return this;
             }
 
-            /**
-             * OPTIONAL. Timeout, in seconds, that a state machine is allowed to run. If the machine execution runs longer than this
-             * timeout the execution fails with a {@link ErrorCodes#TIMEOUT} error
-             *
-             * @param timeoutSeconds Timeout value.
-             * @return This object for method chaining.
-             */
+            /// <summary>
+            /// OPTIONAL. Sets the maximum time, in seconds, that a state machine execution is allowed to run.
+            /// If the execution exceeds this duration, it fails with a `States.Timeout` error.
+            /// </summary>
+            /// <param name="timeoutSeconds">The timeout duration in seconds. Must be a positive integer if provided.</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> section in the specification.
+            /// </remarks>
             public Builder TimeoutSeconds(int timeoutSeconds)
             {
                 _timeoutSeconds = timeoutSeconds;
@@ -187,24 +249,28 @@ namespace StatesLanguage
             }
 
             /// <summary>
-            ///     REQUIRED. Adds a new state to the state machine. A state machine MUST have at least one state.
+            /// REQUIRED. Adds a state definition to the state machine.
+            /// A state machine MUST contain at least one state.
             /// </summary>
-            /// <param name="stateName">Name of the state</param>
-            /// <param name="stateBuilder">
-            ///     Instance of <see cref="State.Builder" />. Note that the <see cref="State" /> object is not built until
-            ///     the <see cref="StateMachine" /> is built so any modifications on the state model will be reflected in this object.
-            /// </param>
-            /// <typeparam name="T"></typeparam>
-            /// <returns>This object for method chaining.</returns>
+            /// <typeparam name="T">The specific type of the state being added (e.g., <see cref="PassState"/>, <see cref="TaskState"/>).</typeparam>
+            /// <param name="stateName">The name of the state. This name must be unique within the state machine and is used for transitions and the <see cref="StartAt"/> field.</param>
+            /// <param name="stateBuilder">A builder instance for the state to be added (e.g., obtained from <see cref="StateMachineBuilder.PassState()"/>).</param>
+            /// <returns>This builder instance for method chaining.</returns>
+            /// <remarks>
+            /// See the <a href="https://states-language.net/spec.html#fields">Top-level fields</a> and <a href="https://states-language.net/spec.html#state-types">State Types</a> sections in the specification.
+            /// </remarks>
             public Builder State<T>(string stateName, State.IBuilder<T> stateBuilder) where T : State
             {
                 _states.Add(stateName, stateBuilder);
                 return this;
             }
 
-            /**
-             * @return An immutable {@link StateMachine} object that can be transformed to JSON via {@link StateMachine#toJson()}.
-             */
+            /// <summary>
+            /// Constructs an immutable <see cref="StateMachine"/> instance from the current configuration of the builder.
+            /// This method also performs validation checks to ensure the state machine definition conforms to the Amazon States Language specification.
+            /// </summary>
+            /// <returns>An immutable, validated <see cref="StateMachine"/> instance.</returns>
+            /// <exception cref="StatesLanguageException">If the state machine definition fails validation (e.g., missing StartAt state, invalid state transitions).</exception>
             public StateMachine Build()
             {
                 return new StateMachineValidator(new StateMachine

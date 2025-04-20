@@ -21,164 +21,175 @@ using StatesLanguage.States;
 
 namespace StatesLanguage
 {
-    /**
-     * Fluent API for creating a {@link StateMachine} object.
-     */
+    /// <summary>
+    /// Fluent API for creating a <see cref="StateMachine"/> object and its components (States, Conditions, Transitions, etc.).
+    /// Provides static factory methods for builders.
+    /// </summary>
     public static class StateMachineBuilder
     {
-        /**
-         * Represents a StepFunctions state machine. A state machine must have at least one state.
-         * 
-         * @return Builder used to configure a {@link StateMachine}.
-         * @see
-         * <a href="https://states-language.net/spec.html#toplevelfields">https://states-language.net/spec.html#toplevelfields</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StateMachine"/>.
+        /// A state machine represents a workflow defined using the Amazon States Language.
+        /// </summary>
+        /// <returns>A new <see cref="StateMachine.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#toplevelfields">State Machine Structure</a> section in the specification.
+        /// </remarks>
         public static StateMachine.Builder StateMachine()
         {
             return StatesLanguage.StateMachine.GetBuilder();
         }
 
-        /**
-         * State that allows for parallel execution of {@link Branch}s. A Parallel state causes the interpreter to execute each
-         * branch starting with the state named in its “StartAt” field, as concurrently as possible, and wait until each branch
-         * terminates
-         * (reaches a terminal state) before processing the Parallel state's “Next” field.
-         * 
-         * @return Builder used to configure a {@link ParallelState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#parallel-state">https://states-language.net/spec.html#parallel-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="ParallelState"/>.
+        /// A Parallel state executes multiple branches of execution concurrently.
+        /// </summary>
+        /// <returns>A new <see cref="ParallelState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#parallel-state">Parallel State</a> section in the specification.
+        /// </remarks>
         public static ParallelState.Builder ParallelState()
         {
             return States.ParallelState.GetBuilder();
         }
-        
+
+        /// <summary>
+        /// Creates a builder for a <see cref="SubStateMachine"/> which represents a branch in a Parallel state.
+        /// </summary>
+        /// <returns>A new <see cref="SubStateMachine.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#parallel-state">Parallel State</a> section in the specification.
+        /// </remarks>
         public static SubStateMachine.Builder SubStateMachine()
         {
             return States.SubStateMachine.GetBuilder();
         }
 
-        /**
-         * The Pass State simply passes its input to its output, performing no work. Pass States are useful when constructing and
-         * debugging state machines.
-         * <p>
-         *     A Pass State MAY have a field named “Result”. If present, its value is treated as the output of a virtual task, and
-         *     placed as prescribed by the “ResultPath” field, if any, to be passed on to the next state.
-         * </p>
-         * @return Builder used to configure a {@link PassState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#pass-state">https://states-language.net/spec.html#pass-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="PassState"/>.
+        /// A Pass state simply passes its input to its output, optionally transforming it or injecting fixed data.
+        /// </summary>
+        /// <returns>A new <see cref="PassState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#pass-state">Pass State</a> section in the specification.
+        /// </remarks>
         public static PassState.Builder PassState()
         {
             return States.PassState.GetBuilder();
         }
 
-        /**
-         * The Succeed State terminates a state machine successfully. The Succeed State is a useful target for Choice-state branches
-         * that don't do anything but terminate the machine.
-         * 
-         * @return Builder used to configure a {@link SucceedState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#succeed-state">https://states-language.net/spec.html#succeed-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="SucceedState"/>.
+        /// A Succeed state terminates the state machine execution successfully.
+        /// </summary>
+        /// <returns>A new <see cref="SucceedState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#succeed-state">Succeed State</a> section in the specification.
+        /// </remarks>
         public static SucceedState.Builder SucceedState()
         {
             return States.SucceedState.GetBuilder();
         }
 
-        /**
-         * Terminal state that terminates the state machine and marks it as a failure.
-         * 
-         * @return Builder used to configure a {@link FailState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#fail-state">https://states-language.net/spec.html#fail-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="FailState"/>.
+        /// A Fail state terminates the state machine execution and marks it as failed.
+        /// </summary>
+        /// <returns>A new <see cref="FailState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#fail-state">Fail State</a> section in the specification.
+        /// </remarks>
         public static FailState.Builder FailState()
         {
             return States.FailState.GetBuilder();
         }
 
-        /**
-         * A Wait state causes the interpreter to delay the machine from continuing for a specified time. The time can be specified
-         * as a wait duration, specified in seconds, or an absolute expiry time, specified as an ISO-8601 extended offset date-time
-         * format string.
-         * 
-         * @return Builder used to configure a {@link WaitState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#wait-state">https://states-language.net/spec.html#wait-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="WaitState"/>.
+        /// A Wait state delays the state machine execution for a specified duration or until a specific time.
+        /// </summary>
+        /// <returns>A new <see cref="WaitState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#wait-state">Wait State</a> section in the specification.
+        /// </remarks>
         public static WaitState.Builder WaitState()
         {
             return States.WaitState.GetBuilder();
         }
 
-        /**
-         * The Task State causes the interpreter to execute the work identified by the state’s “Resource” field.
-         * <p>Currently allowed resources include Lambda functions and States activities.</p>
-         * @return Builder used to configure a {@link TaskState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#task-state">https://states-language.net/spec.html#task-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TaskState"/>.
+        /// A Task state represents a single unit of work performed by the state machine, identified by a resource ARN.
+        /// </summary>
+        /// <returns>A new <see cref="TaskState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#task-state">Task State</a> section in the specification.
+        /// </remarks>
         public static TaskState.Builder TaskState()
         {
             return States.TaskState.GetBuilder();
         }
 
-        /**
-         * A Choice state adds branching logic to a state machine. A Choice state consists of a list of choices, each of which
-         * contains a potential transition state and a condition that determines if that choice is evaluated, and a default state
-         * that the state machine transitions to if no choice branches are matched.
-         * 
-         * @return Builder used to configure a {@link ChoiceState}.
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="ChoiceState"/>.
+        /// A Choice state adds branching logic based on conditions evaluated against the input.
+        /// </summary>
+        /// <returns>A new <see cref="ChoiceState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State</a> section in the specification.
+        /// </remarks>
         public static ChoiceState.Builder ChoiceState()
         {
             return States.ChoiceState.GetBuilder();
         }
 
+        /// <summary>
+        /// Creates a builder for a <see cref="MapState"/>.
+        /// A Map state processes elements of an input array concurrently.
+        /// </summary>
+        /// <returns>A new <see cref="MapState.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#map-state">Map State</a> section in the specification.
+        /// </remarks>
         public static MapState.Builder MapState()
         {
             return States.MapState.GetBuilder();
         }
 
-        /**
-         * Class representing a choice rule to be included in a {@link ChoiceState}. A choice consists of a condition and a state
-         * that the state machine will transition to if the condition evaluates to true.
-         * 
-         * @return Builder used to configure a {@link Choice}.
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="Choice"/> rule used within a <see cref="ChoiceState"/>.
+        /// Each choice defines a condition and the next state to transition to if the condition is met.
+        /// </summary>
+        /// <returns>A new <see cref="Choice.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State</a> section in the specification.
+        /// </remarks>
         public static Choice.Builder Choice()
         {
             return States.Choice.GetBuilder();
         }
 
-        /**
-         * Describes retry behavior for a state. A Retrier consists of a list of error codes that the retrier applies to and
-         * parameters controlling the behavior when a retry is performed.
-         * 
-         * @return Builder used to configure a {@link Retrier}.
-         * @see
-         * <a href="https://states-language.net/spec.html#errors">https://states-language.net/spec.html#errors</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="Retrier"/> policy used within <see cref="TaskState"/> or <see cref="ParallelState"/>.
+        /// Defines retry behavior for specified errors.
+        /// </summary>
+        /// <returns>A new <see cref="Retrier.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#errors">Error Handling</a> section in the specification.
+        /// </remarks>
         public static Retrier.Builder Retrier()
         {
             return States.Retrier.GetBuilder();
         }
 
-        /**
-         * Catches an error from a {@link ParallelState} or a {@link TaskState} and transitions into the specified recovery state.
-         * The
-         * recovery state will receive the error output as input unless otherwise specified by a ResultPath.
-         * 
-         * @return Builder used to configure a {@link Catcher}.
-         * @see
-         * <a href="https://states-language.net/spec.html#errors">https://states-language.net/spec.html#errors</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="Catcher"/> policy used within <see cref="TaskState"/> or <see cref="ParallelState"/>.
+        /// Defines how to handle specified errors by transitioning to a different state.
+        /// </summary>
+        /// <returns>A new <see cref="Catcher.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#errors">Error Handling</a> section in the specification.
+        /// </remarks>
         public static Catcher.Builder Catcher()
         {
             return States.Catcher.GetBuilder();
@@ -186,92 +197,90 @@ namespace StatesLanguage
 
 
         /// <summary>
-        ///     Binary condition for String match comparison.
+        /// Creates a builder for a <see cref="StringMatchesCondition"/>.
+        /// Checks if a string value matches a pattern containing wildcard characters (*).
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison
-        /// </param>
-        /// <param name="expectedValue">The value MUST be a String which MAY contain one or more "*" characters</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The string pattern to match against. May contain '*' wildcards.</param>
+        /// <returns>A new <see cref="StringMatchesCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringMatchesCondition.Builder Match(string variable, string expectedValue)
         {
             return StringMatchesCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for String equality comparison.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return StringEqualsCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StringEqualsCondition"/>.
+        /// Checks if a string value is equal to the expected value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected string value.</param>
+        /// <returns>A new <see cref="StringEqualsCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringEqualsCondition.Builder StringEquals(string variable, string expectedValue)
         {
             return StringEqualsCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for String equality comparison using Json Path.
+        /// Creates a builder for a <see cref="StringEqualsPathCondition"/>.
+        /// Checks if a string value is equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition</param>
-        /// <returns>
-        ///     <see cref="StringEqualsPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="StringEqualsPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringEqualsPathCondition.Builder StringEqualsPath(string variable, string expectedValuePath)
         {
             return StringEqualsPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric equality comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericEqualsCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericEqualsCondition{T}"/> for integer comparison.
+        /// Checks if a numeric value is equal to the expected integer value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected integer value.</param>
+        /// <returns>A new <see cref="NumericEqualsCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericEqualsCondition<long>.Builder NumericEquals(string variable, long expectedValue)
         {
             return NumericEqualsCondition<long>.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for Numeric equality comparison using path. Supports both integral and floating point numeric
-        ///     types.
+        /// Creates a builder for a <see cref="NumericEqualsPathCondition"/>.
+        /// Checks if a numeric value is equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition</param>
-        /// <returns>
-        ///     <see cref="NumericEqualsPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="NumericEqualsPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericEqualsPathCondition.Builder NumericEqualsPath(string variable, string expectedValuePath)
         {
             return NumericEqualsPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric equality comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericEqualsCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericEqualsCondition{T}"/> for floating-point comparison.
+        /// Checks if a numeric value is equal to the expected floating-point value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected floating-point value.</param>
+        /// <returns>A new <see cref="NumericEqualsCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericEqualsCondition<double>.Builder NumericEquals(string variable, double expectedValue)
         {
             return NumericEqualsCondition<double>.GetBuilder()
@@ -279,135 +288,138 @@ namespace StatesLanguage
                 .ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Boolean equality comparison.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return BooleanEqualsCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="BooleanEqualsCondition"/>.
+        /// Checks if a boolean value is equal to the expected boolean value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected boolean value.</param>
+        /// <returns>A new <see cref="BooleanEqualsCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static BooleanEqualsCondition.Builder BooleanEquals(string variable, bool expectedValue)
         {
             return BooleanEqualsCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for Boolean equality comparison.
+        /// Creates a builder for a <see cref="BooleanEqualsPathCondition"/>.
+        /// Checks if a boolean value is equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the comparison.</
-        ///     <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        ///     <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="BooleanEqualsPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static BooleanEqualsPathCondition.Builder BooleanEqualsPath(string variable, string expectedValuePath)
         {
             return BooleanEqualsPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Timestamp equality comparison. Dates are converted to ISO8601 UTC timestamps.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return TimestampEqualsCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TimestampEqualCondition"/>.
+        /// Checks if a timestamp value (ISO 8601 string) is equal to the expected timestamp.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected timestamp value.</param>
+        /// <returns>A new <see cref="TimestampEqualCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampEqualCondition.Builder TimestampEquals(string variable, DateTime expectedValue)
         {
             return TimestampEqualCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for Timestamp equality comparison. Dates are converted to ISO8601 UTC timestamps.
+        /// Creates a builder for a <see cref="TimestampEqualPathCondition"/>.
+        /// Checks if a timestamp value is equal to the timestamp value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected timestamp value in the input.</param>
+        /// <returns>A new <see cref="TimestampEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampEqualPathCondition.Builder TimestampEqualsPath(string variable, string expectedValuePath)
         {
             return TimestampEqualPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for String greater than comparison.
-         * 
-         * @param variable      
-         * @param expectedValue The expected value for this condition.
-         * @return StringGreaterThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StringGreaterThanCondition"/>.
+        /// Checks if a string value is lexicographically greater than the expected value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected string value to compare against.</param>
+        /// <returns>A new <see cref="StringGreaterThanCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringGreaterThanCondition.Builder StringGreaterThan(string variable, string expectedValue)
         {
             return StringGreaterThanCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for String greater than path comparison.
+        /// Creates a builder for a <see cref="StringGreaterThanPathCondition"/>.
+        /// Checks if a string value is lexicographically greater than the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns>
-        ///     <see cref="StringGreaterThanPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="StringGreaterThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringGreaterThanPathCondition.Builder StringGreaterThanPath(string variable,
             string expectedValuePath)
         {
             return StringGreaterThanPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric greater than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericGreaterThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericGreaterThanCondition{T}"/> for integer comparison.
+        /// Checks if a numeric value is greater than the expected integer value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected integer value.</param>
+        /// <returns>A new <see cref="NumericGreaterThanCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanCondition<long>.Builder NumericGreaterThan(string variable, long expectedValue)
         {
             return NumericGreaterThanCondition<long>.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for Numeric greater than comparison using path. Supports both integral and floating point numeric
-        ///     types.
+        /// Creates a builder for a <see cref="NumericGreaterThanPathCondition"/>.
+        /// Checks if a numeric value is greater than the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="NumericGreaterThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanPathCondition.Builder NumericGreaterThanPath(string variable,
             string expectedValuePath)
         {
             return NumericGreaterThanPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric greater than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericGreaterThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericGreaterThanCondition{T}"/> for floating-point comparison.
+        /// Checks if a numeric value is greater than the expected floating-point value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected floating-point value.</param>
+        /// <returns>A new <see cref="NumericGreaterThanCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanCondition<double>.Builder NumericGreaterThan(string variable,
             double expectedValue)
         {
@@ -415,16 +427,16 @@ namespace StatesLanguage
                 .ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Timestamp greater than comparison. Dates are converted to ISO8601 UTC timestamps.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return TimestampGreaterThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TimestampGreaterThanCondition"/>.
+        /// Checks if a timestamp value (ISO 8601 string) is later than the expected timestamp.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected timestamp value.</param>
+        /// <returns>A new <see cref="TimestampGreaterThanCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampGreaterThanCondition.Builder TimestampGreaterThan(string variable,
             DateTime expectedValue)
         {
@@ -432,14 +444,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for Timestamp greater than comparison. Dates are converted to ISO8601 UTC timestamps.
+        /// Creates a builder for a <see cref="TimestampGreaterThanPathCondition"/>.
+        /// Checks if a timestamp value is later than the timestamp value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected timestamp value in the input.</param>
+        /// <returns>A new <see cref="TimestampGreaterThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampGreaterThanPathCondition.Builder TimestampGreaterThanPath(string variable,
             string expectedValuePath)
         {
@@ -447,16 +460,16 @@ namespace StatesLanguage
                 .ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for String greater than or equal to comparison.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return StringGreaterThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StringGreaterThanOrEqualCondition"/>.
+        /// Checks if a string value is lexicographically greater than or equal to the expected value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected string value to compare against.</param>
+        /// <returns>A new <see cref="StringGreaterThanOrEqualCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringGreaterThanOrEqualCondition.Builder StringGreaterThanEquals(string variable,
             string expectedValue)
         {
@@ -464,16 +477,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for String greater than or equal to path comparison.
+        /// Creates a builder for a <see cref="StringGreaterThanOrEqualPathCondition"/>.
+        /// Checks if a string value is lexicographically greater than or equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns>
-        ///     <see cref="StringGreaterThanOrEqualPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="StringGreaterThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringGreaterThanOrEqualPathCondition.Builder StringGreaterThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -482,14 +494,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for Numeric greater than comparison. Supports both integral and floating point numeric types.
+        /// Creates a builder for a <see cref="NumericGreaterThanOrEqualPathCondition"/>.
+        /// Checks if a numeric value is greater than or equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="NumericGreaterThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanOrEqualPathCondition.Builder NumericGreaterThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -497,16 +510,16 @@ namespace StatesLanguage
                 .ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric greater than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericGreaterThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericGreaterThanOrEqualCondition{T}"/> for integer comparison.
+        /// Checks if a numeric value is greater than or equal to the expected integer value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected integer value.</param>
+        /// <returns>A new <see cref="NumericGreaterThanOrEqualCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanOrEqualCondition<long>.Builder NumericGreaterThanEquals(string variable,
             long expectedValue)
         {
@@ -514,16 +527,16 @@ namespace StatesLanguage
                 .Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Numeric greater than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericGreaterThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericGreaterThanOrEqualCondition{T}"/> for floating-point comparison.
+        /// Checks if a numeric value is greater than or equal to the expected floating-point value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected floating-point value.</param>
+        /// <returns>A new <see cref="NumericGreaterThanOrEqualCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericGreaterThanOrEqualCondition<double>.Builder NumericGreaterThanEquals(string variable,
             double expectedValue)
         {
@@ -531,16 +544,16 @@ namespace StatesLanguage
                 .Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Timestamp greater than or equal to comparison. Dates are converted to ISO8601 UTC timestamps.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return TimestampGreaterThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TimestampGreaterThanOrEqualCondition"/>.
+        /// Checks if a timestamp value (ISO 8601 string) is later than or equal to the expected timestamp.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected timestamp value.</param>
+        /// <returns>A new <see cref="TimestampGreaterThanOrEqualCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampGreaterThanOrEqualCondition.Builder TimestampGreaterThanEquals(string variable,
             DateTime expectedValue)
         {
@@ -548,14 +561,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for Timestamp greater than or equal to comparison. Dates are converted to ISO8601 UTC timestamps.
+        /// Creates a builder for a <see cref="TimestampGreaterThanOrEqualPathCondition"/>.
+        /// Checks if a timestamp value is later than or equal to the timestamp value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected timestamp value in the input.</param>
+        /// <returns>A new <see cref="TimestampGreaterThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampGreaterThanOrEqualPathCondition.Builder TimestampGreaterThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -563,141 +577,140 @@ namespace StatesLanguage
                 .ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for String less than comparison.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return StringLessThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StringLessThanCondition"/>.
+        /// Checks if a string value is lexicographically less than the expected value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected string value to compare against.</param>
+        /// <returns>A new <see cref="StringLessThanCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringLessThanCondition.Builder StringLessThan(string variable, string expectedValue)
         {
             return StringLessThanCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for String less than path comparison.
+        /// Creates a builder for a <see cref="StringLessThanPathCondition"/>.
+        /// Checks if a string value is lexicographically less than the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns>
-        ///     <see cref="StringLessThanPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="StringLessThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringLessThanPathCondition.Builder StringLessThanPath(string variable, string expectedValuePath)
         {
             return StringLessThanPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
         /// <summary>
-        ///     Binary condition for Numeric less than comparison. Supports both integral and floating point numeric types.
+        /// Creates a builder for a <see cref="NumericLessThanPathCondition"/>.
+        /// Checks if a numeric value is less than the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="NumericLessThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanPathCondition.Builder NumericLessThanPath(string variable,
             string expectedValuePath)
         {
             return NumericLessThanPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric less than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericLessThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericLessThanCondition{T}"/> for integer comparison.
+        /// Checks if a numeric value is less than the expected integer value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected integer value.</param>
+        /// <returns>A new <see cref="NumericLessThanCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanCondition<long>.Builder NumericLessThan(string variable, long expectedValue)
         {
             return NumericLessThanCondition<long>.GetBuilder().Variable(variable)
                 .ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Numeric less than comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericLessThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericLessThanCondition{T}"/> for floating-point comparison.
+        /// Checks if a numeric value is less than the expected floating-point value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected floating-point value.</param>
+        /// <returns>A new <see cref="NumericLessThanCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanCondition<double>.Builder NumericLessThan(string variable, double expectedValue)
         {
             return NumericLessThanCondition<double>.GetBuilder().Variable(variable)
                 .ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Timestamp less than comparison. Dates are converted to ISO8601 UTC timestamps.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return TimestampLessThanCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TimestampLessThanCondition"/>.
+        /// Checks if a timestamp value (ISO 8601 string) is earlier than the expected timestamp.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected timestamp value.</param>
+        /// <returns>A new <see cref="TimestampLessThanCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampLessThanCondition.Builder TimestampLessThan(string variable, DateTime expectedValue)
         {
             return TimestampLessThanCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for Timestamp less than comparison using Path. Dates are converted to ISO8601 UTC timestamps.
+        /// Creates a builder for a <see cref="TimestampLessThanPathCondition"/>.
+        /// Checks if a timestamp value is earlier than the timestamp value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected timestamp value in the input.</param>
+        /// <returns>A new <see cref="TimestampLessThanPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampLessThanPathCondition.Builder TimestampLessThanPath(string variable,
             string expectedValuePath)
         {
             return TimestampLessThanPathCondition.GetBuilder().Variable(variable).ExpectedValuePath(expectedValuePath);
         }
 
-
-        /**
-         * Binary condition for String less than or equal to comparison.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return StringLessThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="StringLessThanOrEqualCondition"/>.
+        /// Checks if a string value is lexicographically less than or equal to the expected value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected string value to compare against.</param>
+        /// <returns>A new <see cref="StringLessThanOrEqualCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringLessThanOrEqualCondition.Builder StringLessThanEquals(string variable, string expectedValue)
         {
             return StringLessThanOrEqualCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for String less than or equal path comparison.
+        /// Creates a builder for a <see cref="StringLessThanOrEqualPathCondition"/>.
+        /// Checks if a string value is lexicographically less than or equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns>
-        ///     <see cref="StringLessThanPathCondition.Builder" />
-        /// </returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="StringLessThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static StringLessThanOrEqualPathCondition.Builder StringLessThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -706,15 +719,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for Numeric less than or equal to comparison. Supports both integral and floating point numeric
-        ///     types.
+        /// Creates a builder for a <see cref="NumericLessThanOrEqualPathCondition"/>.
+        /// Checks if a numeric value is less than or equal to the value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected value in the input.</param>
+        /// <returns>A new <see cref="NumericLessThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanOrEqualPathCondition.Builder NumericLessThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -722,48 +735,48 @@ namespace StatesLanguage
                 .ExpectedValuePath(expectedValuePath);
         }
 
-        /**
-         * Binary condition for Numeric less than or equal to comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericLessThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericLessThanOrEqualCondition{T}"/> for integer comparison.
+        /// Checks if a numeric value is less than or equal to the expected integer value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected integer value.</param>
+        /// <returns>A new <see cref="NumericLessThanOrEqualCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanOrEqualCondition<long>.Builder NumericLessThanEquals(string variable,
             long expectedValue)
         {
             return NumericLessThanOrEqualCondition<long>.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Numeric less than or equal to comparison. Supports both integral and floating point numeric types.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return NumericLessThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NumericLessThanOrEqualCondition{T}"/> for floating-point comparison.
+        /// Checks if a numeric value is less than or equal to the expected floating-point value.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected floating-point value.</param>
+        /// <returns>A new <see cref="NumericLessThanOrEqualCondition{T}.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static NumericLessThanOrEqualCondition<double>.Builder NumericLessThanEquals(string variable,
             double expectedValue)
         {
             return NumericLessThanOrEqualCondition<double>.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Binary condition for Timestamp less than or equal to comparison. Dates are converted to ISO8601 UTC timestamps.
-         * 
-         * @param variable      The JSONPath expression that determines which piece of the input document is used for the comparison.
-         * @param expectedValue The expected value for this condition.
-         * @return TimestampLessThanOrEqualCondition.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         * @see Choice
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="TimestampLessThanOrEqualCondition"/>.
+        /// Checks if a timestamp value (ISO 8601 string) is earlier than or equal to the expected timestamp.
+        /// </summary>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValue">The expected timestamp value.</param>
+        /// <returns>A new <see cref="TimestampLessThanOrEqualCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampLessThanOrEqualCondition.Builder TimestampLessThanEquals(string variable,
             DateTime expectedValue)
         {
@@ -771,15 +784,15 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for Timestamp less than or equal to comparison using path. Dates are converted to ISO8601 UTC
-        ///     timestamps.
+        /// Creates a builder for a <see cref="TimestampLessThanOrEqualPathCondition"/>.
+        /// Checks if a timestamp value is earlier than or equal to the timestamp value at another path in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValuePath">The JSONPath expression that determines the expected value for this condition.</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to compare.</param>
+        /// <param name="expectedValuePath">JSONPath expression pointing to the expected timestamp value in the input.</param>
+        /// <returns>A new <see cref="TimestampLessThanOrEqualPathCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static TimestampLessThanOrEqualPathCondition.Builder TimestampLessThanEqualsPath(string variable,
             string expectedValuePath)
         {
@@ -788,204 +801,216 @@ namespace StatesLanguage
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is null.
+        /// Creates a builder for an <see cref="IsNullCondition"/>.
+        /// Checks if the value at the specified path is null.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue">Must be null or not</param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check for null, false to check for not null.</param>
+        /// <returns>A new <see cref="IsNullCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsNullCondition.Builder IsNull(string variable, bool expectedValue)
         {
             return IsNullCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is present.
+        /// Creates a builder for an <see cref="IsPresentCondition"/>.
+        /// Checks if the specified path exists in the input.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue"></param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check for presence, false to check for absence.</param>
+        /// <returns>A new <see cref="IsPresentCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsPresentCondition.Builder IsPresent(string variable, bool expectedValue)
         {
             return IsPresentCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is a Numeric (integer or float).
+        /// Creates a builder for an <see cref="IsNumericCondition"/>.
+        /// Checks if the value at the specified path is a number (integer or floating-point).
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue"></param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check if numeric, false otherwise.</param>
+        /// <returns>A new <see cref="IsNumericCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsNumericCondition.Builder IsNumeric(string variable, bool expectedValue)
         {
             return IsNumericCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is a String.
+        /// Creates a builder for an <see cref="IsStringCondition"/>.
+        /// Checks if the value at the specified path is a string.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue"></param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check if string, false otherwise.</param>
+        /// <returns>A new <see cref="IsStringCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsStringCondition.Builder IsString(string variable, bool expectedValue)
         {
             return IsStringCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is a Boolean.
+        /// Creates a builder for an <see cref="IsBooleanCondition"/>.
+        /// Checks if the value at the specified path is a boolean.
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue"></param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check if boolean, false otherwise.</param>
+        /// <returns>A new <see cref="IsBooleanCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsBooleanCondition.Builder IsBoolean(string variable, bool expectedValue)
         {
             return IsBooleanCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
         /// <summary>
-        ///     Binary condition for testing if a Path is a Timestamp.
+        /// Creates a builder for an <see cref="IsTimestampCondition"/>.
+        /// Checks if the value at the specified path is a timestamp (ISO 8601 string).
         /// </summary>
-        /// <param name="variable">
-        ///     The JSONPath expression that determines which piece of the input document is used for the
-        ///     comparison.
-        /// </param>
-        /// <param name="expectedValue"></param>
-        /// <returns></returns>
+        /// <param name="variable">JSONPath expression pointing to the input field to check.</param>
+        /// <param name="expectedValue">Set to true to check if timestamp, false otherwise.</param>
+        /// <returns>A new <see cref="IsTimestampCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Comparison Operators</a> section.
+        /// </remarks>
         public static IsTimestampCondition.Builder IsTimestamp(string variable, bool expectedValue)
         {
             return IsTimestampCondition.GetBuilder().Variable(variable).ExpectedValue(expectedValue);
         }
 
-        /**
-         * Represents the logical NOT of a single condition. May be used in a {@link ChoiceState}.
-         * 
-         * @param conditionBuilder The condition to be negated. May be another composite condition or a simple condition.
-         * @return Builder used to configure a {@link NotCondition}.
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NotCondition"/>.
+        /// Represents the logical negation of another condition.
+        /// </summary>
+        /// <typeparam name="T">The type of the condition being negated.</typeparam>
+        /// <param name="conditionBuilder">The builder for the condition to negate.</param>
+        /// <returns>A new <see cref="NotCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Logical Operators</a> section.
+        /// </remarks>
         public static NotCondition.Builder Not<T>(IConditionBuilder<T> conditionBuilder) where T : ICondition
         {
             return NotCondition.GetBuilder().Condition(conditionBuilder);
         }
 
-        /**
-         * Represents the logical AND of multiple conditions. May be used in a {@link ChoiceState}.
-         * 
-         * @param conditionBuilders The conditions to AND together. May be another composite condition or a simple condition.
-         * @return Builder used to configure a {@link AndCondition}.
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for an <see cref="AndCondition"/>.
+        /// Represents the logical AND of multiple conditions. All conditions must be true for the AND condition to be true.
+        /// </summary>
+        /// <param name="conditionBuilders">An array of builders for the conditions to combine.</param>
+        /// <returns>A new <see cref="AndCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Logical Operators</a> section.
+        /// </remarks>
         public static AndCondition.Builder And(params IBuildable<ICondition>[] conditionBuilders)
         {
             return AndCondition.GetBuilder().Conditions(conditionBuilders);
         }
 
-        /**
-         * Represents the logical OR of multiple conditions. May be used in a {@link ChoiceState}.
-         * 
-         * @param conditionBuilders The conditions to OR together. May be another composite condition or a simple condition.
-         * @return Builder used to configure a {@link OrCondition}.
-         * @see
-         * <a href="https://states-language.net/spec.html#choice-state">https://states-language.net/spec.html#choice-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for an <see cref="OrCondition"/>.
+        /// Represents the logical OR of multiple conditions. At least one condition must be true for the OR condition to be true.
+        /// </summary>
+        /// <param name="conditionBuilders">An array of builders for the conditions to combine.</param>
+        /// <returns>A new <see cref="OrCondition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#choice-state">Choice State Logical Operators</a> section.
+        /// </remarks>
         public static OrCondition.Builder Or(params IBuildable<ICondition>[] conditionBuilders)
         {
             return OrCondition.GetBuilder().Conditions(conditionBuilders);
         }
 
-        /**
-         * A transition to another state in the state machine.
-         * 
-         * @param nextStateName Name of state to transition to.
-         * @return Transition to another state in the state machine.
-         * @see
-         * <a href="https://states-language.net/spec.html#transition">https://states-language.net/spec.html#transition</a>
-         */
+        /// <summary>
+        /// Creates a builder for a <see cref="NextStateTransition"/>.
+        /// Represents a transition to a specific state by name.
+        /// </summary>
+        /// <param name="nextStateName">The name of the state to transition to.</param>
+        /// <returns>A new <see cref="NextStateTransition.Builder"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#transition">Transition</a> section in the specification.
+        /// </remarks>
         public static NextStateTransition.Builder Next(string nextStateName)
         {
             return NextStateTransition.GetBuilder().NextStateName(nextStateName);
         }
 
-        /**
-         * Transition indicating the state machine should terminate execution.
-         * 
-         * @return EndTransition
-         * @see
-         * <a href="https://states-language.net/spec.html#transition">https://states-language.net/spec.html#transition</a>
-         */
+        /// <summary>
+        /// Creates a builder for an <see cref="EndTransition"/>.
+        /// Represents the termination of the current execution path (branch or state machine).
+        /// </summary>
+        /// <returns>A new <see cref="ITransitionBuilder{EndTransition}"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#transition">Transition</a> section in the specification.
+        /// </remarks>
         public static ITransitionBuilder<EndTransition> End()
         {
             return EndTransition.GetBuilder();
         }
 
-        /**
-         * {@link WaitFor} that can be used in a {@link WaitState}. Instructs the {@link WaitState} to wait for the
-         * given number of seconds.
-         * 
-         * @param seconds Number of seconds to wait. Must be positive.
-         * @return WaitFor.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#wait-state">https://states-language.net/spec.html#wait-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for <see cref="WaitForSeconds"/> used in a <see cref="WaitState"/>.
+        /// Specifies a wait duration in seconds.
+        /// </summary>
+        /// <param name="seconds">The number of seconds to wait. Must be positive.</param>
+        /// <returns>A new <see cref="IWaitForBuilder{WaitForSeconds}"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#wait-state">Wait State</a> section in the specification.
+        /// </remarks>
         public static IWaitForBuilder<WaitForSeconds> Seconds(int seconds)
         {
             return WaitForSeconds.GetBuilder().Seconds(seconds);
         }
 
-        /**
-         * {@link WaitFor} that can be used in a {@link WaitState}. Instructs the {@link WaitState} to wait for the
-         * number of seconds specified at the reference path in the input to the state.
-         * 
-         * @param secondsPath Reference path to the location in the input data containing the number of seconds to wait.
-         * @return WaitFor.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#wait-state">https://states-language.net/spec.html#wait-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for <see cref="WaitForSecondsPath"/> used in a <see cref="WaitState"/>.
+        /// Specifies a wait duration by referencing a path in the input data that contains the number of seconds.
+        /// </summary>
+        /// <param name="secondsPath">JSONPath expression pointing to the number of seconds in the input.</param>
+        /// <returns>A new <see cref="IWaitForBuilder{WaitForSecondsPath}"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#wait-state">Wait State</a> section in the specification.
+        /// </remarks>
         public static IWaitForBuilder<WaitForSecondsPath> SecondsPath(string secondsPath)
         {
             return WaitForSecondsPath.GetBuilder().SecondsPath(secondsPath);
         }
 
-        /**
-         * {@link WaitFor} that can be used in a {@link WaitState}. Instructs the {@link WaitState} to wait until
-         * the given timestamp.
-         * 
-         * @param timestamp DateTime to wait until before proceeding.
-         * @return WaitFor.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#wait-state">https://states-language.net/spec.html#wait-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for <see cref="WaitForTimestamp"/> used in a <see cref="WaitState"/>.
+        /// Specifies an absolute time to wait until.
+        /// </summary>
+        /// <param name="timestamp">The absolute time (UTC) to wait until.</param>
+        /// <returns>A new <see cref="IWaitForBuilder{WaitForTimestamp}"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#wait-state">Wait State</a> section in the specification.
+        /// </remarks>
         public static IWaitForBuilder<WaitForTimestamp> Timestamp(DateTime timestamp)
         {
             return WaitForTimestamp.GetBuilder().Timestamp(timestamp);
         }
 
-        /**
-         * {@link WaitFor} that can be used in a {@link WaitState}. Instructs the {@link WaitState} to wait until
-         * the date specified at the reference path in the input to the state.
-         * 
-         * @param timestampPath Reference path to the location in the input data containing the date to wait until.
-         * @return WaitFor.Builder
-         * @see
-         * <a href="https://states-language.net/spec.html#wait-state">https://states-language.net/spec.html#wait-state</a>
-         */
+        /// <summary>
+        /// Creates a builder for <see cref="WaitForTimestampPath"/> used in a <see cref="WaitState"/>.
+        /// Specifies an absolute time to wait until by referencing a path in the input data that contains the timestamp string.
+        /// </summary>
+        /// <param name="timestampPath">JSONPath expression pointing to the timestamp string (ISO 8601 format) in the input.</param>
+        /// <returns>A new <see cref="IWaitForBuilder{WaitForTimestampPath}"/> instance.</returns>
+        /// <remarks>
+        /// See the <a href="https://states-language.net/spec.html#wait-state">Wait State</a> section in the specification.
+        /// </remarks>
         public static IWaitForBuilder<WaitForTimestampPath> TimestampPath(string timestampPath)
         {
             return WaitForTimestampPath.GetBuilder().TimestampPath(timestampPath);
